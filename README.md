@@ -1,2 +1,2 @@
 # mediagent
-Open-source AI Clinical &amp; Medical Research Assistant
+Open-source AI Clinical & Medical Research Assistant
