@@ -21,6 +21,38 @@ The platform is designed around four core principles:
 
 ---
 
+# 📸 Application Preview
+
+## Landing Page
+
+![Landing Page](docs/images/screenshots/Landing-page.png)
+
+---
+
+## Clinical Reasoning
+
+![Clinical Reasoning](docs/images/screenshots/Clinical-reasoning.png)
+
+---
+
+## Medical Research
+
+![Research Mode](docs/images/screenshots/Research-mode.png)
+
+---
+
+## Drug Comparison
+
+![Drug Comparison](docs/images/screenshots/drug-comparison.png)
+
+---
+
+## Project Structure
+
+![Project Structure](docs/images/screenshots/project-structure.png)
+
+---
+
 ## Current Features
 
 - AI Clinical Question Answering
