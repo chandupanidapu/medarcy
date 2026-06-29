@@ -1,68 +1,87 @@
-import { Bell, UserCircle, Stethoscope } from "lucide-react";
+import {
+  Activity,
+  Bell,
+  BookOpenCheck,
+  BrainCircuit,
+  Circle,
+  UserCircle2,
+} from "lucide-react";
 
-export default function Header() {
-    return (
-        <header
-            style={{
-                height: "72px",
-                background: "#ffffff",
-                borderBottom: "1px solid #e5e7eb",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                padding: "0 28px",
-            }}
-        >
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                }}
-            >
-                <Stethoscope size={24} color="#2563eb" />
+const systemStatus = {
+  aiPipeline: "Operational",
+  evidenceEngine: "Active",
+  knowledgeBase: "Updated",
+};
 
-                <div>
-                    <div
-                        style={{
-                            fontSize: "20px",
-                            fontWeight: "700",
-                            color: "#111827",
-                        }}
-                    >
-                        MediAgent
-                    </div>
+function StatusItem({ icon: Icon, title, value }) {
+  return (
+    <div className="status-item">
+      <Icon size={16} className="status-icon" />
 
-                    <div
-                        style={{
-                            fontSize: "13px",
-                            color: "#6b7280",
-                        }}
-                    >
-                        Clinical Intelligence Platform
-                    </div>
-                </div>
-            </div>
-
-            <div
-                style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "20px",
-                }}
-            >
-                <Bell
-                    size={22}
-                    color="#6b7280"
-                    style={{ cursor: "pointer" }}
-                />
-
-                <UserCircle
-                    size={34}
-                    color="#374151"
-                    style={{ cursor: "pointer" }}
-                />
-            </div>
-        </header>
-    );
+      <div className="status-text">
+        <span className="status-title">{title}</span>
+        <span className="status-value">
+          <Circle
+            size={8}
+            fill="#22c55e"
+            color="#22c55e"
+          />
+          {value}
+        </span>
+      </div>
+    </div>
+  );
 }
+
+function Header() {
+  return (
+    <header className="header">
+
+      <div className="header-left">
+
+        <h1>Clinical Intelligence Workspace</h1>
+
+        <p>
+          Evidence synthesis • Differential diagnosis • Medical research •
+          Clinical decision support
+        </p>
+
+      </div>
+
+      <div className="header-right">
+
+        <StatusItem
+          icon={BrainCircuit}
+          title="AI Pipeline"
+          value={systemStatus.aiPipeline}
+        />
+
+        <StatusItem
+          icon={BookOpenCheck}
+          title="Evidence Engine"
+          value={systemStatus.evidenceEngine}
+        />
+
+        <StatusItem
+          icon={Activity}
+          title="Knowledge Base"
+          value={systemStatus.knowledgeBase}
+        />
+
+        <div className="header-divider" />
+
+        <button className="icon-button">
+          <Bell size={18} />
+        </button>
+
+        <button className="icon-button">
+          <UserCircle2 size={22} />
+        </button>
+
+      </div>
+
+    </header>
+  );
+}
+
+export default Header;
