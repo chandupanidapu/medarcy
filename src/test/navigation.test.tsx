@@ -34,7 +34,7 @@ async function renderAt(path: string) {
     context: { queryClient: new QueryClient() },
     defaultPreloadStaleTime: 0,
   });
-  render(<RouterProvider router={router} />);
+  render(<RouterProvider router={router} />, { container: document });
   await screen.findByRole('heading', { level: 1 });
   return router;
 }
