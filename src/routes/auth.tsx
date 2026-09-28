@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { createFileRoute } from '@tanstack/react-router';
 import { useEffect, useState, type FormEvent } from 'react';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
@@ -25,7 +25,6 @@ export const Route = createFileRoute('/auth')({
 
 function AuthPage() {
   const { next } = Route.useSearch();
-  const navigate = useNavigate();
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -81,7 +80,6 @@ function AuthPage() {
       <button type="button" className="mt-4 text-sm text-muted-foreground underline" onClick={() => setMode(mode === 'signin' ? 'signup' : 'signin')}>
         {mode === 'signin' ? 'Need an account? Sign up' : 'Have an account? Sign in'}
       </button>
-      <span className="hidden">{String(!!navigate)}</span>
     </div>
   );
 }
