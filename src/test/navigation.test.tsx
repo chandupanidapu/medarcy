@@ -104,7 +104,9 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(localStorage.getItem('medarcy-theme')).toBe('dark');
     expect(screen.getByRole('button', { name: 'Switch to light mode' })).toHaveAttribute('aria-pressed', 'true');
     await user.click(screen.getByRole('button', { name: 'Approve Review' }));
-    expect(await screen.findByRole('dialog', { name: 'Confirm clinician review' })).toBeInTheDocument();
+    const dialog = await screen.findByRole('dialog', { name: 'Confirm clinician review' });
+    expect(dialog).toBeInTheDocument();
+    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }));
     await user.click(screen.getByRole('button', { name: 'Switch to light mode' }));
     expect(document.documentElement).not.toHaveClass('dark');
     expect(localStorage.getItem('medarcy-theme')).toBe('light');
