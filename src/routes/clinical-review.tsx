@@ -15,7 +15,7 @@ const fields = [
   ['Relevant medical history', 'No significant history recorded in the fictional intake'], ['Current medications', 'None recorded in this sample'], ['Allergies', 'Not documented — verify before care'],
   ['Vital signs', 'Sample only: temperature 37.6 °C; pulse 82 bpm; SpO₂ 97% on room air'], ['Laboratory findings', 'No laboratory results available'], ['Examination findings', 'Sample only: breathing comfortably; full examination not documented'],
 ] as const;
-function ClinicalReview() {
+export function ClinicalReview() {
   const [selected, setSelected] = useState(0);
   const activeSection = report[selected] ?? report[0];
   const [expanded, setExpanded] = useState(true);

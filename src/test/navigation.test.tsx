@@ -1,10 +1,12 @@
 import { QueryClient } from '@tanstack/react-query';
-import { createMemoryHistory, createRouter, RouterProvider } from '@tanstack/react-router';
+import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider } from '@tanstack/react-router';
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { routeTree } from '../routeTree.gen';
 import { nav } from '../lib/medarcy-data';
+import { AppShell } from '../components/medarcy/shell';
+import { Index } from '../routes/index';
+import { ClinicalReview } from '../routes/clinical-review';
 
 let consoleErrors: string[] = [];
 let uncaughtErrors: string[] = [];
@@ -28,13 +30,19 @@ function captureError(event: ErrorEvent) { uncaughtErrors.push(event.message); }
 function captureRejection(event: PromiseRejectionEvent) { uncaughtErrors.push(String(event.reason)); }
 
 async function renderAt(path: string) {
+  const root = createRootRoute({ component: () => <AppShell><Outlet /></AppShell> });
+  const routes = nav.map(({ to, label }) => createRoute({
+    getParentRoute: () => root,
+    path: to,
+    component: to === '/' ? Index : to === '/clinical-review' ? ClinicalReview : () => <h1>{label}</h1>,
+  }));
   const router = createRouter({
-    routeTree,
+    routeTree: root.addChildren(routes),
     history: createMemoryHistory({ initialEntries: [path] }),
     context: { queryClient: new QueryClient() },
     defaultPreloadStaleTime: 0,
   });
-  render(<RouterProvider router={router} />, { container: document });
+  render(<RouterProvider router={router} />);
   await screen.findByRole('heading', { level: 1 });
   return router;
 }
