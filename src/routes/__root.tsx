@@ -107,6 +107,7 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en">
       <head>
         <HeadContent />
+        <script dangerouslySetInnerHTML={{ __html: `try { if (localStorage.getItem('medarcy-theme') === 'dark') { document.documentElement.classList.add('dark'); document.documentElement.style.colorScheme = 'dark'; } } catch (_) {}` }} />
       </head>
       <body>
         {children}

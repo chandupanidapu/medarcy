@@ -93,4 +93,22 @@ describe('Medarcy navigation and interactive controls', () => {
     await user.click(within(await screen.findByRole('dialog')).getByRole('button', { name: 'Mark reviewed in demo' }));
     expect(screen.getByRole('button', { name: 'Reviewed in demo' })).toBeInTheDocument();
   });
+
+  it('switches appearance and keeps the selected mode across remounts', async () => {
+    const user = userEvent.setup();
+    localStorage.removeItem('medarcy-theme');
+    document.documentElement.classList.remove('dark');
+    await renderAt('/clinical-review');
+    await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }));
+    expect(document.documentElement).toHaveClass('dark');
+    expect(localStorage.getItem('medarcy-theme')).toBe('dark');
+    expect(screen.getByRole('button', { name: 'Switch to light mode' })).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('button', { name: 'Approve Review' }));
+    const dialog = await screen.findByRole('dialog', { name: 'Confirm clinician review' });
+    expect(dialog).toBeInTheDocument();
+    await user.click(within(dialog).getByRole('button', { name: 'Cancel' }));
+    await user.click(screen.getByRole('button', { name: 'Switch to light mode' }));
+    expect(document.documentElement).not.toHaveClass('dark');
+    expect(localStorage.getItem('medarcy-theme')).toBe('light');
+  });
 });
