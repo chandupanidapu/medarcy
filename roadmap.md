@@ -1,3 +1,4 @@
 - [x] Build Medarcy shell, design system, navigation, and workspace home
 - [x] Build clinical, research, evidence, drug, diagnostics, knowledge, and history pages
 - [x] Verify local interactions and responsive presentation
+- [ ] Add and verify a remembered dark mode across workspaces

@@ -17,5 +17,8 @@ beforeEach(() => {
 
 afterEach(() => {
   cleanup();
+  document.documentElement.classList.remove('dark');
+  document.documentElement.style.colorScheme = '';
+  localStorage.removeItem('medarcy-theme');
   vi.restoreAllMocks();
 });
