@@ -9,7 +9,7 @@ import { Label } from '@/components/ui/label';
 import { safeNext } from '@/lib/safe-redirect';
 
 export const Route = createFileRoute('/auth')({
-  validateSearch: (s: Record<string, unknown>) => ({ next: safeNext(s.next) }),
+  validateSearch: (s: Record<string, unknown>) => ({ next: safeNext(s['next']) }),
   head: () => ({
     meta: [
       { title: 'Sign in · Medarcy' },
