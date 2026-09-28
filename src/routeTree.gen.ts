@@ -10,33 +10,128 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ClinicalReviewRouteImport } from './routes/clinical-review'
+import { Route as DiagnosticsRouteImport } from './routes/diagnostics'
+import { Route as DrugIntelligenceRouteImport } from './routes/drug-intelligence'
+import { Route as EvidenceEngineRouteImport } from './routes/evidence-engine'
+import { Route as HistoryRouteImport } from './routes/history'
+import { Route as KnowledgeBaseRouteImport } from './routes/knowledge-base'
+import { Route as MedicalResearchRouteImport } from './routes/medical-research'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ClinicalReviewRoute = ClinicalReviewRouteImport.update({
+  id: '/clinical-review',
+  path: '/clinical-review',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DiagnosticsRoute = DiagnosticsRouteImport.update({
+  id: '/diagnostics',
+  path: '/diagnostics',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DrugIntelligenceRoute = DrugIntelligenceRouteImport.update({
+  id: '/drug-intelligence',
+  path: '/drug-intelligence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvidenceEngineRoute = EvidenceEngineRouteImport.update({
+  id: '/evidence-engine',
+  path: '/evidence-engine',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HistoryRoute = HistoryRouteImport.update({
+  id: '/history',
+  path: '/history',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const KnowledgeBaseRoute = KnowledgeBaseRouteImport.update({
+  id: '/knowledge-base',
+  path: '/knowledge-base',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicalResearchRoute = MedicalResearchRouteImport.update({
+  id: '/medical-research',
+  path: '/medical-research',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/clinical-review': typeof ClinicalReviewRoute
+  '/diagnostics': typeof DiagnosticsRoute
+  '/drug-intelligence': typeof DrugIntelligenceRoute
+  '/evidence-engine': typeof EvidenceEngineRoute
+  '/history': typeof HistoryRoute
+  '/knowledge-base': typeof KnowledgeBaseRoute
+  '/medical-research': typeof MedicalResearchRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/clinical-review': typeof ClinicalReviewRoute
+  '/diagnostics': typeof DiagnosticsRoute
+  '/drug-intelligence': typeof DrugIntelligenceRoute
+  '/evidence-engine': typeof EvidenceEngineRoute
+  '/history': typeof HistoryRoute
+  '/knowledge-base': typeof KnowledgeBaseRoute
+  '/medical-research': typeof MedicalResearchRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/clinical-review': typeof ClinicalReviewRoute
+  '/diagnostics': typeof DiagnosticsRoute
+  '/drug-intelligence': typeof DrugIntelligenceRoute
+  '/evidence-engine': typeof EvidenceEngineRoute
+  '/history': typeof HistoryRoute
+  '/knowledge-base': typeof KnowledgeBaseRoute
+  '/medical-research': typeof MedicalResearchRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/clinical-review'
+    | '/diagnostics'
+    | '/drug-intelligence'
+    | '/evidence-engine'
+    | '/history'
+    | '/knowledge-base'
+    | '/medical-research'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/clinical-review'
+    | '/diagnostics'
+    | '/drug-intelligence'
+    | '/evidence-engine'
+    | '/history'
+    | '/knowledge-base'
+    | '/medical-research'
+  id:
+    | '__root__'
+    | '/'
+    | '/clinical-review'
+    | '/diagnostics'
+    | '/drug-intelligence'
+    | '/evidence-engine'
+    | '/history'
+    | '/knowledge-base'
+    | '/medical-research'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ClinicalReviewRoute: typeof ClinicalReviewRoute
+  DiagnosticsRoute: typeof DiagnosticsRoute
+  DrugIntelligenceRoute: typeof DrugIntelligenceRoute
+  EvidenceEngineRoute: typeof EvidenceEngineRoute
+  HistoryRoute: typeof HistoryRoute
+  KnowledgeBaseRoute: typeof KnowledgeBaseRoute
+  MedicalResearchRoute: typeof MedicalResearchRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +143,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/clinical-review': {
+      id: '/clinical-review'
+      path: '/clinical-review'
+      fullPath: '/clinical-review'
+      preLoaderRoute: typeof ClinicalReviewRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/diagnostics': {
+      id: '/diagnostics'
+      path: '/diagnostics'
+      fullPath: '/diagnostics'
+      preLoaderRoute: typeof DiagnosticsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/drug-intelligence': {
+      id: '/drug-intelligence'
+      path: '/drug-intelligence'
+      fullPath: '/drug-intelligence'
+      preLoaderRoute: typeof DrugIntelligenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evidence-engine': {
+      id: '/evidence-engine'
+      path: '/evidence-engine'
+      fullPath: '/evidence-engine'
+      preLoaderRoute: typeof EvidenceEngineRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/knowledge-base': {
+      id: '/knowledge-base'
+      path: '/knowledge-base'
+      fullPath: '/knowledge-base'
+      preLoaderRoute: typeof KnowledgeBaseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medical-research': {
+      id: '/medical-research'
+      path: '/medical-research'
+      fullPath: '/medical-research'
+      preLoaderRoute: typeof MedicalResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ClinicalReviewRoute: ClinicalReviewRoute,
+  DiagnosticsRoute: DiagnosticsRoute,
+  DrugIntelligenceRoute: DrugIntelligenceRoute,
+  EvidenceEngineRoute: EvidenceEngineRoute,
+  HistoryRoute: HistoryRoute,
+  KnowledgeBaseRoute: KnowledgeBaseRoute,
+  MedicalResearchRoute: MedicalResearchRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

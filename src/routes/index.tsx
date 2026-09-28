@@ -1,24 +1,23 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link, useNavigate } from '@tanstack/react-router';
+import { useRef, useState } from 'react';
+import { ArrowRight, ArrowUp, ChevronRight, FilePlus2, Mic, Paperclip, Plus } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Textarea } from '@/components/ui/textarea';
+import { quickActions, sessions, meta } from '@/lib/medarcy-data';
+import { SectionTitle, SampleBadge } from '@/components/medarcy/primitives';
+import { toast } from 'sonner';
 
-// No head() here: the home route inherits title/description/og/twitter from
-// __root.tsx, and ships no og:image so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
-export const Route = createFileRoute("/")({
-  component: Index,
-});
-
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+export const Route = createFileRoute('/')({ head: () => meta('Workspace', 'Explore Medarcy’s clinical intelligence workspace prototype for case review, evidence, and research.'), component: Index });
 function Index() {
-  return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
-  );
+  const [task, setTask] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const submit = () => { if (!task.trim()) { toast.info('Enter a clinical question to preview the review workspace.'); return; } toast.info('Demo only: your question was not analyzed or saved. Opening the sample review.'); navigate({ to: '/clinical-review' }); };
+  return <div className="space-y-9">
+    <div className="grid gap-6 border-b border-border pb-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end"><div><div className="mb-4 flex items-center gap-2 text-[11px] font-semibold uppercase text-muted-foreground tracking-widest"><span className="h-1.5 w-1.5 rounded-full bg-teal" /> Clinical Intelligence Workspace</div><h1 className="font-display text-[30px] font-semibold leading-tight sm:text-[38px]">Good evening, Doctor.</h1><p className="mt-3 max-w-[650px] text-sm leading-6 text-muted-foreground">Your clinical intelligence workspace for patient case analysis, evidence review, medical research, and clinical decision support.</p></div><div className="flex items-center gap-2 text-xs text-muted-foreground"><span className="size-2 rounded-full bg-teal" /> Interface demo · Sample content</div></div>
+    <section aria-label="Clinical task composer" className="overflow-hidden rounded-md border border-border bg-card shadow-sm"><div className="flex items-center justify-between gap-3 border-b border-border bg-muted/40 px-5 py-3"><div className="flex items-center gap-2 text-xs font-semibold"><span className="grid size-5 place-items-center rounded bg-primary text-primary-foreground"><Plus className="size-3" /></span> New clinical task</div><span className="text-[11px] text-muted-foreground">Workspace input</span></div><div className="p-4 sm:p-6"><Textarea value={task} onChange={(e) => setTask(e.target.value)} placeholder="Describe a clinical question, enter a case, or choose a task…" aria-label="Clinical question or case" className="min-h-[116px] resize-none border-0 bg-transparent p-0 text-sm leading-6 shadow-none placeholder:text-muted-foreground focus-visible:ring-0" /><div className="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4"><div className="flex items-center gap-1"><input ref={inputRef} type="file" className="hidden" accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg" onChange={(e) => { const file = e.target.files?.[0]; if (file) toast.info(`${file.name} selected for this demo; nothing was uploaded.`); e.target.value = ''; }} /><Button size="sm" variant="ghost" title="Attach file" aria-label="Attach file" onClick={() => inputRef.current?.click()}><Paperclip /></Button><Button size="sm" variant="ghost" title="Upload medical document" aria-label="Upload medical document" onClick={() => inputRef.current?.click()}><FilePlus2 /></Button><Button size="sm" variant="ghost" title="Microphone unavailable in demo" aria-label="Microphone" onClick={() => toast.info('Voice input is not connected in this demo.')}><Mic /></Button><span className="ml-2 hidden text-xs text-muted-foreground sm:inline">Files remain on your device in this demo</span></div><Button onClick={submit} className="w-full sm:w-auto">Open review <ArrowUp /></Button></div></div></section>
+    <p className="-mt-5 text-xs text-muted-foreground">Review clinical information, explore evidence, and generate structured insights. No live analysis is performed in this prototype.</p>
+    <section><SectionTitle title="What would you like to do?" action={<span className="text-xs text-muted-foreground">Choose a workspace</span>} /><div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{quickActions.map(({ title, description, icon: Icon, to }) => <Link to={to} key={title} className="group flex min-h-[126px] flex-col justify-between rounded-md border border-border bg-card p-5 transition-[border-color,box-shadow] hover:border-primary/35 hover:shadow-sm"><div className="flex items-start justify-between"><span className="grid size-9 place-items-center rounded bg-secondary text-primary"><Icon className="size-[18px]" strokeWidth={1.8} /></span><ArrowRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-1 group-hover:text-primary" /></div><div><h3 className="mt-4 text-sm font-semibold">{title}</h3><p className="mt-1 text-xs leading-5 text-muted-foreground">{description}</p></div></Link>)}</div></section>
+    <div className="grid gap-9 xl:grid-cols-[minmax(0,1.45fr)_minmax(300px,1fr)]"><section><SectionTitle title="Recent work" action={<Link to="/history" className="flex items-center gap-1 text-xs font-medium text-primary hover:underline">View history <ChevronRight className="size-3" /></Link>} /><div className="overflow-hidden rounded-md border border-border bg-card">{sessions.map((item) => <Link to={item.to} key={item.title} className="flex items-center gap-3 border-b border-border px-4 py-4 last:border-0 hover:bg-muted/40 sm:px-5"><span className="grid size-9 shrink-0 place-items-center rounded bg-muted text-muted-foreground"><FilePlus2 className="size-4" /></span><span className="min-w-0 flex-1"><span className="block truncate text-sm font-medium">{item.title}</span><span className="block truncate text-xs text-muted-foreground">{item.detail}</span></span><span className="hidden shrink-0 text-[11px] text-muted-foreground sm:block">{item.date}</span><ChevronRight className="size-4 shrink-0 text-muted-foreground" /></Link>)}</div></section><section><SectionTitle title="Clinical workflow" action={<SampleBadge />} /><div className="rounded-md border border-border bg-card p-5"><p className="mb-5 text-xs leading-5 text-muted-foreground">Conceptual workflow · not a depiction of active system operations</p><div className="space-y-0">{['Clinical Context', 'Knowledge Retrieval', 'Reasoning', 'Verification', 'Safety Review', 'Structured Result'].map((step, index) => <div key={step} className="flex items-center gap-3"><div className="flex w-6 flex-col items-center self-stretch"><span className={`grid size-6 shrink-0 place-items-center rounded-full border text-[10px] font-semibold ${index === 5 ? 'border-teal bg-teal-soft text-primary' : 'border-border bg-muted text-muted-foreground'}`}>{String(index + 1).padStart(2, '0')}</span>{index < 5 && <span className="h-4 w-px bg-border" />}</div><span className="self-start pt-1 text-xs font-medium">{step}</span></div>)}</div></div></section></div>
+  </div>;
 }
