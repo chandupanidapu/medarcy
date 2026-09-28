@@ -66,7 +66,7 @@ describe('Medarcy navigation and interactive controls', () => {
     await user.click(screen.getByRole('button', { name: 'Open navigation' }));
     expect(screen.getByRole('button', { name: 'Close navigation' }).closest('aside')).toHaveClass('translate-x-0');
     await user.click(screen.getByRole('link', { name: 'New Session' }));
-    expect(await screen.findByRole('heading', { name: 'Good evening, Doctor.', level: 1 })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Medarcy Clinical Intelligence Workspace', level: 1 })).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Close navigation' }).closest('aside')).toHaveClass('-translate-x-full');
   });
 
