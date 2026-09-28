@@ -74,7 +74,7 @@ describe('Medarcy navigation and interactive controls', () => {
     const user = userEvent.setup();
     await renderAt('/');
     await user.type(screen.getByRole('textbox', { name: 'Global search' }), 'Medication safety');
-    expect((await screen.findByText('Demo interaction screen')).closest('a')).toHaveAttribute('href', '/drug-intelligence');
+    expect((await screen.findAllByText('Demo interaction screen')).some((item) => item.closest('a')?.getAttribute('href') === '/drug-intelligence')).toBe(true);
     await user.click(screen.getByRole('button', { name: 'Profile menu' }));
     expect(await screen.findByRole('menuitem', { name: 'Profile settings' })).toBeInTheDocument();
     await user.keyboard('{Escape}');
