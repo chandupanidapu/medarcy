@@ -8,7 +8,7 @@ import { SectionTitle, SampleBadge } from '@/components/medarcy/primitives';
 import { toast } from 'sonner';
 
 export const Route = createFileRoute('/')({ head: () => meta('Workspace', 'Explore Medarcy’s clinical intelligence workspace prototype for case review, evidence, and research.'), component: Index });
-function Index() {
+export function Index() {
   const [task, setTask] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
