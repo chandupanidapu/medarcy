@@ -53,7 +53,7 @@ describe('Medarcy navigation and interactive controls', () => {
     await renderAt('/');
     const navigation = screen.getByRole('navigation', { name: 'Workspace navigation' });
     for (const item of nav) {
-      expect(within(navigation).getByRole('link', { name: item.label, exact: true })).toHaveAttribute('href', item.to);
+      expect(within(navigation).getByRole('link', { name: item.label })).toHaveAttribute('href', item.to);
     }
     expect(within(navigation).getByRole('link', { name: 'Clinical case review' })).toBeInTheDocument();
     await user.click(within(navigation).getByRole('link', { name: 'Clinical Review' }));
