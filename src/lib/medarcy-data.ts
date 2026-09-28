@@ -49,8 +49,8 @@ export const studies = [
   { id: 'S-05', title: 'Sample study: Clinical decision support', year: '2020', type: 'Review', summary: 'Fictional review entry. Verify original sources in a real evidence system.', relevance: 'Lower' },
 ] as const;
 
-export const meta = (title: string, description: string) => ({ meta: [
+export const meta = (title: string, description: string, path: string) => ({ meta: [
   { title: `${title} | Medarcy` }, { name: 'description', content: description },
   { property: 'og:title', content: `${title} | Medarcy` }, { property: 'og:description', content: description },
-  { property: 'og:type', content: 'website' }, { name: 'twitter:card', content: 'summary' },
-] });
+  { property: 'og:type', content: 'website' }, { property: 'og:url', content: path }, { name: 'twitter:card', content: 'summary' },
+], links: [{ rel: 'canonical', href: path }] });

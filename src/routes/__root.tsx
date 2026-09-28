@@ -78,13 +78,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Medarcy | Clinical Intelligence Platform" },
-      { name: "description", content: "A clinical intelligence workspace prototype for professional review and evidence exploration." },
       { name: "author", content: "Medarcy" },
-      { property: "og:title", content: "Medarcy | Clinical Intelligence Platform" },
-      { property: "og:description", content: "A clinical intelligence workspace prototype for professional review and evidence exploration." },
       { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:site_name", content: "Medarcy" },
     ],
     links: [
       {

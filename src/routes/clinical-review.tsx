@@ -9,7 +9,7 @@ import { PageHeading, Notice, SampleBadge, SectionTitle } from '@/components/med
 import { meta, report } from '@/lib/medarcy-data';
 import { toast } from 'sonner';
 
-export const Route = createFileRoute('/clinical-review')({ head: () => meta('Clinical Review', 'Structured sample clinical review with visible uncertainty, evidence context, and clinician oversight.'), component: ClinicalReview });
+export const Route = createFileRoute('/clinical-review')({ head: () => meta('Clinical Review', 'Structured sample clinical review with visible uncertainty, evidence context, and clinician oversight.', '/clinical-review'), component: ClinicalReview });
 const fields = [
   ['Chief complaint', 'Cough and fatigue for four days'], ['History of present illness', 'Fictional adult outpatient reports dry cough, fatigue, and intermittent low-grade temperature. No acute distress reported in this sample.'],
   ['Relevant medical history', 'No significant history recorded in the fictional intake'], ['Current medications', 'None recorded in this sample'], ['Allergies', 'Not documented — verify before care'],
