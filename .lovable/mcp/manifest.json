@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "sdk_version": "3.0.4",
+  "path": "/mcp",
+  "auth": {
+    "type": "none"
+  },
+  "mcp": {
+    "server": {
+      "name": "medarcy-clinical-intelligence",
+      "version": "0.1.0",
+      "title": "Medarcy: Clinical Intelligence"
+    },
+    "tools": [
+      {
+        "name": "list_workspaces",
+        "title": "List Medarcy workspaces",
+        "description": "List the publicly visible workspaces in the Medarcy visual prototype.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": null,
+        "outputSchema": null
+      },
+      {
+        "name": "search_sample_evidence",
+        "title": "Search fictional evidence examples",
+        "description": "Search Medarcy’s five fictional demonstration study records; these are not real publications.",
+        "annotations": {
+          "readOnlyHint": true,
+          "idempotentHint": true,
+          "openWorldHint": false
+        },
+        "inputSchema": {
+          "$schema": "https://json-schema.org/draft/2020-12/schema",
+          "type": "object",
+          "properties": {
+            "query": {
+              "description": "Optional text to match against sample titles, types, and summaries.",
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          "additionalProperties": false
+        },
+        "outputSchema": null
+      }
+    ]
+  }
+}
