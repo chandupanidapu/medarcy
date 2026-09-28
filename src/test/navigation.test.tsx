@@ -116,12 +116,13 @@ describe('Medarcy navigation and interactive controls', () => {
     const user = userEvent.setup();
     await renderAt('/');
     const brand = screen.getByRole('link', { name: 'Medarcy workspace' });
-    expect(within(brand).getAllByRole('img', { hidden: true })).toHaveLength(4);
-    expect(within(brand).getAllByRole('img', { hidden: true })[0]).toHaveAttribute('src', expect.stringContaining('medarcy-light-full.png'));
-    expect(within(brand).getAllByRole('img', { hidden: true })[1]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-full.png'));
+    const images = brand.querySelectorAll('img');
+    expect(images).toHaveLength(4);
+    expect(images[0]).toHaveAttribute('src', expect.stringContaining('medarcy-light-full.png'));
+    expect(images[1]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-full.png'));
     await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }));
     expect(document.documentElement).toHaveClass('dark');
     await user.click(screen.getByRole('button', { name: 'Collapse navigation' }));
-    expect(within(brand).getAllByRole('img', { hidden: true })[3]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-mark.png'));
+    expect(images[3]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-mark.png'));
   });
 });
