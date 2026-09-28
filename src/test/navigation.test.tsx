@@ -111,4 +111,18 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(document.documentElement).not.toHaveClass('dark');
     expect(localStorage.getItem('medarcy-theme')).toBe('light');
   });
+
+  it('shows the supplied Medarcy marks in the navigation for each appearance', async () => {
+    const user = userEvent.setup();
+    await renderAt('/');
+    const brand = screen.getByRole('link', { name: 'Medarcy workspace' });
+    const images = brand.querySelectorAll('img');
+    expect(images).toHaveLength(4);
+    expect(images[0]).toHaveAttribute('src', expect.stringContaining('medarcy-light-full.png'));
+    expect(images[1]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-full.png'));
+    await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }));
+    expect(document.documentElement).toHaveClass('dark');
+    await user.click(screen.getByRole('button', { name: 'Collapse navigation' }));
+    expect(images[3]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-mark.png'));
+  });
 });

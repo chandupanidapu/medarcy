@@ -7,6 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Toaster } from '@/components/ui/sonner';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
+import lightLogo from '@/assets/medarcy-light-full.png.asset.json';
+import darkLogo from '@/assets/medarcy-dark-full.png.asset.json';
+import lightMark from '@/assets/medarcy-light-mark.png.asset.json';
+import darkMark from '@/assets/medarcy-dark-mark.png.asset.json';
 
 export function AppShell({ children }: { children: ReactNode }) {
   const path = useRouterState({ select: (s) => s.location.pathname });
@@ -29,9 +33,19 @@ export function AppShell({ children }: { children: ReactNode }) {
   return <div className="min-h-screen bg-background text-foreground">
     {mobileOpen && <div className="fixed inset-0 z-40 bg-overlay lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />}
     <aside className={`fixed inset-y-0 left-0 z-50 flex flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground transition-[width,transform] duration-200 ${collapsed ? 'lg:w-[76px]' : 'lg:w-[252px]'} w-[252px] ${mobileOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}`}>
-      <div className={`flex h-[80px] items-center border-b border-sidebar-border px-5 ${collapsed ? 'lg:justify-center lg:px-2' : 'justify-between'}`}>
-        <Link to="/" className="flex min-w-0 items-center gap-3" aria-label="Medarcy workspace"><div className="grid size-9 shrink-0 place-items-center rounded-md border border-gold/40 text-gold"><span className="font-display text-xl font-semibold">M</span></div><div className={collapsed ? 'lg:hidden' : ''}><div className="font-display text-[20px] font-semibold leading-5 text-sidebar-foreground">Medarcy</div><div className="mt-1 text-[9px] uppercase text-sidebar-muted tracking-widest">Clinical Intelligence Platform</div></div></Link>
-        <Button variant="ghost" size="icon" className="text-sidebar-muted lg:hidden" aria-label="Close navigation" onClick={() => setMobileOpen(false)}><X /></Button>
+       <div className={`relative flex h-[148px] shrink-0 items-center justify-center border-b border-sidebar-border bg-card px-4 dark:bg-sidebar ${collapsed ? 'lg:h-[80px] lg:px-2' : ''}`}>
+         <Link to="/" className="flex min-w-0 flex-col items-center gap-1" aria-label="Medarcy workspace" onClick={() => setMobileOpen(false)}>
+           <span className={collapsed ? 'lg:hidden' : ''}>
+             <img src={lightLogo.url} alt="" className="h-[98px] w-[114px] object-contain dark:hidden" />
+             <img src={darkLogo.url} alt="" className="hidden h-[98px] w-[114px] object-contain dark:block" />
+           </span>
+           <span className={`text-center text-[9px] font-semibold uppercase text-sidebar-action-foreground dark:text-sidebar-muted tracking-widest ${collapsed ? 'lg:hidden' : ''}`}>Clinical Intelligence Platform</span>
+           <span className={collapsed ? 'hidden lg:block' : 'hidden'}>
+             <img src={lightMark.url} alt="" className="size-11 object-contain dark:hidden" />
+             <img src={darkMark.url} alt="" className="hidden size-11 object-contain dark:block" />
+           </span>
+         </Link>
+         <Button variant="ghost" size="icon" className="absolute right-2 top-2 text-sidebar-action-foreground dark:text-sidebar-muted lg:hidden" aria-label="Close navigation" onClick={() => setMobileOpen(false)}><X /></Button>
       </div>
       <div className="px-4 pt-5"><Link to="/" onClick={() => setMobileOpen(false)} className={buttonVariants({ className: `h-10 w-full justify-start bg-sidebar-action text-sidebar-action-foreground hover:bg-sidebar-action/90 ${collapsed ? 'lg:justify-center lg:px-0' : ''}` })}><Plus className="size-4 shrink-0" /><span className={collapsed ? 'lg:hidden' : ''}>New Session</span></Link></div>
       <nav className="mt-8 flex-1 overflow-y-auto px-3" aria-label="Workspace navigation"><p className={`mb-3 px-3 text-[10px] font-semibold uppercase text-sidebar-muted tracking-widest ${collapsed ? 'lg:hidden' : ''}`}>Workspace</p><div className="space-y-1">{nav.map(({ label, to, icon: Icon }) => <Link key={to} to={to} title={label} className={`flex h-10 items-center gap-3 rounded-md px-3 text-[13px] transition-colors ${collapsed ? 'lg:justify-center' : ''} ${path === to ? 'bg-sidebar-accent text-sidebar-foreground font-medium' : 'text-sidebar-muted hover:bg-sidebar-accent hover:text-sidebar-foreground'}`}><Icon className={`size-[17px] shrink-0 ${path === to ? 'text-gold' : ''}`} strokeWidth={1.8} /><span className={collapsed ? 'lg:hidden' : ''}>{label}</span></Link>)}</div>

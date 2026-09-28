@@ -12,3 +12,4 @@
 - Keep Medarcy's clinical content and interactions in client-side mock modules; this is a visual prototype without authentication or persistence, so future service integration can replace the mock boundary safely.
 - Give each Medarcy workspace its own TanStack route and metadata; this keeps professional workflows navigable and shareable.
 - Keep the appearance preference in local browser storage and apply it before paint via the root shell; the prototype needs a consistent theme without a backend or hydration flash.
+- Serve supplied Medarcy logo variants through asset pointers and select them with CSS theme classes; this keeps SSR branding stable while matching light and dark appearance.
