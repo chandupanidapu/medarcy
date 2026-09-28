@@ -16,7 +16,9 @@ import { Route as DrugIntelligenceRouteImport } from './routes/drug-intelligence
 import { Route as EvidenceEngineRouteImport } from './routes/evidence-engine'
 import { Route as HistoryRouteImport } from './routes/history'
 import { Route as KnowledgeBaseRouteImport } from './routes/knowledge-base'
+import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MedicalResearchRouteImport } from './routes/medical-research'
+import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -53,11 +55,22 @@ const KnowledgeBaseRoute = KnowledgeBaseRouteImport.update({
   path: '/knowledge-base',
   getParentRoute: () => rootRouteImport,
 } as any)
+const McpRoute = McpRouteImport.update({
+  id: '/mcp',
+  path: '/mcp',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MedicalResearchRoute = MedicalResearchRouteImport.update({
   id: '/medical-research',
   path: '/medical-research',
   getParentRoute: () => rootRouteImport,
 } as any)
+const Char91DotwellKnownChar93OauthProtectedResourceRoute =
+  Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
+    id: '/.well-known/oauth-protected-resource',
+    path: '/.well-known/oauth-protected-resource',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -67,7 +80,9 @@ export interface FileRoutesByFullPath {
   '/evidence-engine': typeof EvidenceEngineRoute
   '/history': typeof HistoryRoute
   '/knowledge-base': typeof KnowledgeBaseRoute
+  '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -77,7 +92,9 @@ export interface FileRoutesByTo {
   '/evidence-engine': typeof EvidenceEngineRoute
   '/history': typeof HistoryRoute
   '/knowledge-base': typeof KnowledgeBaseRoute
+  '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -88,7 +105,9 @@ export interface FileRoutesById {
   '/evidence-engine': typeof EvidenceEngineRoute
   '/history': typeof HistoryRoute
   '/knowledge-base': typeof KnowledgeBaseRoute
+  '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -100,7 +119,9 @@ export interface FileRouteTypes {
     | '/evidence-engine'
     | '/history'
     | '/knowledge-base'
+    | '/mcp'
     | '/medical-research'
+    | '/.well-known/oauth-protected-resource'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -110,7 +131,9 @@ export interface FileRouteTypes {
     | '/evidence-engine'
     | '/history'
     | '/knowledge-base'
+    | '/mcp'
     | '/medical-research'
+    | '/.well-known/oauth-protected-resource'
   id:
     | '__root__'
     | '/'
@@ -120,7 +143,9 @@ export interface FileRouteTypes {
     | '/evidence-engine'
     | '/history'
     | '/knowledge-base'
+    | '/mcp'
     | '/medical-research'
+    | '/.well-known/oauth-protected-resource'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -131,7 +156,9 @@ export interface RootRouteChildren {
   EvidenceEngineRoute: typeof EvidenceEngineRoute
   HistoryRoute: typeof HistoryRoute
   KnowledgeBaseRoute: typeof KnowledgeBaseRoute
+  McpRoute: typeof McpRoute
   MedicalResearchRoute: typeof MedicalResearchRoute
+  Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -185,11 +212,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof KnowledgeBaseRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/mcp': {
+      id: '/mcp'
+      path: '/mcp'
+      fullPath: '/mcp'
+      preLoaderRoute: typeof McpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/medical-research': {
       id: '/medical-research'
       path: '/medical-research'
       fullPath: '/medical-research'
       preLoaderRoute: typeof MedicalResearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/.well-known/oauth-protected-resource': {
+      id: '/.well-known/oauth-protected-resource'
+      path: '/.well-known/oauth-protected-resource'
+      fullPath: '/.well-known/oauth-protected-resource'
+      preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -203,7 +244,10 @@ const rootRouteChildren: RootRouteChildren = {
   EvidenceEngineRoute: EvidenceEngineRoute,
   HistoryRoute: HistoryRoute,
   KnowledgeBaseRoute: KnowledgeBaseRoute,
+  McpRoute: McpRoute,
   MedicalResearchRoute: MedicalResearchRoute,
+  Char91DotwellKnownChar93OauthProtectedResourceRoute:
+    Char91DotwellKnownChar93OauthProtectedResourceRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
