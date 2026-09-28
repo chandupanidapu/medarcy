@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ClinicalReviewRouteImport } from './routes/clinical-review'
 import { Route as DiagnosticsRouteImport } from './routes/diagnostics'
 import { Route as DrugIntelligenceRouteImport } from './routes/drug-intelligence'
@@ -19,10 +20,16 @@ import { Route as KnowledgeBaseRouteImport } from './routes/knowledge-base'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MedicalResearchRouteImport } from './routes/medical-research'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
+import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ClinicalReviewRoute = ClinicalReviewRouteImport.update({
@@ -71,9 +78,15 @@ const Char91DotwellKnownChar93OauthProtectedResourceRoute =
     path: '/.well-known/oauth-protected-resource',
     getParentRoute: () => rootRouteImport,
   } as any)
+const DotlovableOauthConsentRoute = DotlovableOauthConsentRouteImport.update({
+  id: '/.lovable/oauth/consent',
+  path: '/.lovable/oauth/consent',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/clinical-review': typeof ClinicalReviewRoute
   '/diagnostics': typeof DiagnosticsRoute
   '/drug-intelligence': typeof DrugIntelligenceRoute
@@ -83,9 +96,11 @@ export interface FileRoutesByFullPath {
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/clinical-review': typeof ClinicalReviewRoute
   '/diagnostics': typeof DiagnosticsRoute
   '/drug-intelligence': typeof DrugIntelligenceRoute
@@ -95,10 +110,12 @@ export interface FileRoutesByTo {
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/clinical-review': typeof ClinicalReviewRoute
   '/diagnostics': typeof DiagnosticsRoute
   '/drug-intelligence': typeof DrugIntelligenceRoute
@@ -108,11 +125,13 @@ export interface FileRoutesById {
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/auth'
     | '/clinical-review'
     | '/diagnostics'
     | '/drug-intelligence'
@@ -122,9 +141,11 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/medical-research'
     | '/.well-known/oauth-protected-resource'
+    | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/auth'
     | '/clinical-review'
     | '/diagnostics'
     | '/drug-intelligence'
@@ -134,9 +155,11 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/medical-research'
     | '/.well-known/oauth-protected-resource'
+    | '/.lovable/oauth/consent'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/clinical-review'
     | '/diagnostics'
     | '/drug-intelligence'
@@ -146,10 +169,12 @@ export interface FileRouteTypes {
     | '/mcp'
     | '/medical-research'
     | '/.well-known/oauth-protected-resource'
+    | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ClinicalReviewRoute: typeof ClinicalReviewRoute
   DiagnosticsRoute: typeof DiagnosticsRoute
   DrugIntelligenceRoute: typeof DrugIntelligenceRoute
@@ -159,6 +184,7 @@ export interface RootRouteChildren {
   McpRoute: typeof McpRoute
   MedicalResearchRoute: typeof MedicalResearchRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -168,6 +194,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/clinical-review': {
@@ -233,11 +266,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/.lovable/oauth/consent': {
+      id: '/.lovable/oauth/consent'
+      path: '/.lovable/oauth/consent'
+      fullPath: '/.lovable/oauth/consent'
+      preLoaderRoute: typeof DotlovableOauthConsentRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ClinicalReviewRoute: ClinicalReviewRoute,
   DiagnosticsRoute: DiagnosticsRoute,
   DrugIntelligenceRoute: DrugIntelligenceRoute,
@@ -248,6 +289,7 @@ const rootRouteChildren: RootRouteChildren = {
   MedicalResearchRoute: MedicalResearchRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
