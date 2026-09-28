@@ -36,13 +36,13 @@ export function AppShell({ children }: { children: ReactNode }) {
        <div className={`relative flex h-[148px] shrink-0 items-center justify-center border-b border-sidebar-border bg-card px-4 dark:bg-sidebar ${collapsed ? 'lg:h-[80px] lg:px-2' : ''}`}>
          <Link to="/" className="flex min-w-0 flex-col items-center gap-1" aria-label="Medarcy workspace" onClick={() => setMobileOpen(false)}>
            <span className={collapsed ? 'lg:hidden' : ''}>
-             <img src={lightLogo.url} alt="" className="h-[98px] w-[114px] object-contain dark:hidden" />
-             <img src={darkLogo.url} alt="" className="hidden h-[98px] w-[114px] object-contain dark:block" />
+             <img src={lightLogo.url} alt="Medarcy logo" className="h-[98px] w-[114px] object-contain dark:hidden" />
+             <img src={darkLogo.url} alt="Medarcy logo" className="hidden h-[98px] w-[114px] object-contain dark:block" />
            </span>
            <span className={`text-center text-[9px] font-semibold uppercase text-sidebar-action-foreground dark:text-sidebar-muted tracking-widest ${collapsed ? 'lg:hidden' : ''}`}>Clinical Intelligence Platform</span>
            <span className={collapsed ? 'hidden lg:block' : 'hidden'}>
-             <img src={lightMark.url} alt="" className="size-11 object-contain dark:hidden" />
-             <img src={darkMark.url} alt="" className="hidden size-11 object-contain dark:block" />
+             <img src={lightMark.url} alt="Medarcy logo" className="size-11 object-contain dark:hidden" />
+             <img src={darkMark.url} alt="Medarcy logo" className="hidden size-11 object-contain dark:block" />
            </span>
          </Link>
          <Button variant="ghost" size="icon" className="absolute right-2 top-2 text-sidebar-action-foreground dark:text-sidebar-muted lg:hidden" aria-label="Close navigation" onClick={() => setMobileOpen(false)}><X /></Button>
