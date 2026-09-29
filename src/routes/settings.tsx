@@ -22,6 +22,7 @@ export function Settings() {
   const [draft, setDraft] = useState<Profile>(profile);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => { setDraft(profile); }, [profile]);
   const update = (key: keyof Profile, value: string) => {
     setDraft((current) => ({ ...current, [key]: value }));
