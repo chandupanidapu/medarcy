@@ -39,3 +39,24 @@ export function buildProfileExport(profile: Profile) {
     },
   };
 }
+
+export type ProfileImportResult = { ok: true; profile: Profile } | { ok: false; error: string };
+
+export function parseProfileImport(json: string): ProfileImportResult {
+  let data: unknown;
+  try {
+    data = JSON.parse(json);
+  } catch {
+    return { ok: false, error: 'That file is not valid JSON. Choose a Medarcy profile backup file.' };
+  }
+  if (!data || typeof data !== 'object' || Array.isArray(data)) {
+    return { ok: false, error: 'That file is not a Medarcy profile backup.' };
+  }
+  const record = data as Record<string, unknown>;
+  const candidate = 'profile' in record ? record.profile : record;
+  const parsed = profileSchema.safeParse(candidate);
+  if (!parsed.success) {
+    return { ok: false, error: parsed.error.issues[0]?.message ?? 'The profile details in that file are not valid.' };
+  }
+  return { ok: true, profile: parsed.data };
+}
