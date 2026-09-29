@@ -4,3 +4,4 @@
 - [x] Add and verify a remembered dark mode across workspaces
 - [x] Replace placeholder branding with supplied theme-specific logos and favicon
 - [x] Add public read-only agent tools for fictional Medarcy prototype content
+- [x] Add Settings with profile, appearance, and clinical-service information

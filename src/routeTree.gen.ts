@@ -19,6 +19,7 @@ import { Route as HistoryRouteImport } from './routes/history'
 import { Route as KnowledgeBaseRouteImport } from './routes/knowledge-base'
 import { Route as McpRouteImport } from './routes/mcp'
 import { Route as MedicalResearchRouteImport } from './routes/medical-research'
+import { Route as SettingsRouteImport } from './routes/settings'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
 
@@ -72,6 +73,11 @@ const MedicalResearchRoute = MedicalResearchRouteImport.update({
   path: '/medical-research',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const Char91DotwellKnownChar93OauthProtectedResourceRoute =
   Char91DotwellKnownChar93OauthProtectedResourceRouteImport.update({
     id: '/.well-known/oauth-protected-resource',
@@ -95,6 +101,7 @@ export interface FileRoutesByFullPath {
   '/knowledge-base': typeof KnowledgeBaseRoute
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/settings': typeof SettingsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/knowledge-base': typeof KnowledgeBaseRoute
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/settings': typeof SettingsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/knowledge-base': typeof KnowledgeBaseRoute
   '/mcp': typeof McpRoute
   '/medical-research': typeof MedicalResearchRoute
+  '/settings': typeof SettingsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
 }
@@ -140,6 +149,7 @@ export interface FileRouteTypes {
     | '/knowledge-base'
     | '/mcp'
     | '/medical-research'
+    | '/settings'
     | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   fileRoutesByTo: FileRoutesByTo
@@ -154,6 +164,7 @@ export interface FileRouteTypes {
     | '/knowledge-base'
     | '/mcp'
     | '/medical-research'
+    | '/settings'
     | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   id:
@@ -168,6 +179,7 @@ export interface FileRouteTypes {
     | '/knowledge-base'
     | '/mcp'
     | '/medical-research'
+    | '/settings'
     | '/.well-known/oauth-protected-resource'
     | '/.lovable/oauth/consent'
   fileRoutesById: FileRoutesById
@@ -183,6 +195,7 @@ export interface RootRouteChildren {
   KnowledgeBaseRoute: typeof KnowledgeBaseRoute
   McpRoute: typeof McpRoute
   MedicalResearchRoute: typeof MedicalResearchRoute
+  SettingsRoute: typeof SettingsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
 }
@@ -259,6 +272,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof MedicalResearchRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/.well-known/oauth-protected-resource': {
       id: '/.well-known/oauth-protected-resource'
       path: '/.well-known/oauth-protected-resource'
@@ -287,6 +307,7 @@ const rootRouteChildren: RootRouteChildren = {
   KnowledgeBaseRoute: KnowledgeBaseRoute,
   McpRoute: McpRoute,
   MedicalResearchRoute: MedicalResearchRoute,
+  SettingsRoute: SettingsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,
