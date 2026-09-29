@@ -99,7 +99,8 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(screen.getByRole('status')).toHaveTextContent('Profile saved in this browser.');
     expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveValue('Dr. Maya Patel');
     expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toContain('Internal medicine');
-    expect(screen.getByText('Physician · Internal medicine')).toBeInTheDocument();
+    const sidebarRole = screen.getByText('Physician · Internal medicine', { selector: '.text-sidebar-muted' });
+    expect(sidebarRole).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Settings' }).parentElement).toHaveTextContent('Dr. Maya Patel');
     await user.click(screen.getByRole('button', { name: 'Profile menu' }));
     expect(await screen.findByText('Dr. Maya Patel', { selector: '[role="menu"] *' })).toBeInTheDocument();
