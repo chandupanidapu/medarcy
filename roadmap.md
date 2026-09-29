@@ -5,3 +5,4 @@
 - [x] Replace placeholder branding with supplied theme-specific logos and favicon
 - [x] Add public read-only agent tools for fictional Medarcy prototype content
 - [x] Add Settings with profile, appearance, and clinical-service information
+- [x] Edit and save a local demo profile from Settings
