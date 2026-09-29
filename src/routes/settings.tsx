@@ -1,14 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Download, Moon, Sun } from 'lucide-react';
+import { Download, Moon, Sun, Upload } from 'lucide-react';
 import { toast } from 'sonner';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeading } from '@/components/medarcy/primitives';
 import { useAppearance } from '@/components/medarcy/appearance';
 import { useProfile } from '@/components/medarcy/profile';
-import { buildProfileExport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
+import { buildProfileExport, parseProfileImport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
 import { meta } from '@/lib/medarcy-data';
 
 export const Route = createFileRoute('/settings')({
