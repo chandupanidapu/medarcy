@@ -20,5 +20,6 @@ afterEach(() => {
   document.documentElement.classList.remove('dark');
   document.documentElement.style.colorScheme = '';
   localStorage.removeItem('medarcy-theme');
+  localStorage.removeItem('medarcy-profile-v1');
   vi.restoreAllMocks();
 });

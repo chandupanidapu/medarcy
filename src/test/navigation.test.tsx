@@ -1,6 +1,6 @@
 import { QueryClient } from '@tanstack/react-query';
 import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet, RouterProvider } from '@tanstack/react-router';
-import { render, screen, within } from '@testing-library/react';
+import { cleanup, render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { nav, quickActions } from '../lib/medarcy-data';
@@ -8,6 +8,7 @@ import { AppShell } from '../components/medarcy/shell';
 import { Index } from '../routes/index';
 import { ClinicalReview } from '../routes/clinical-review';
 import { Settings } from '../routes/settings';
+import { PROFILE_STORAGE_KEY } from '../lib/profile';
 
 let consoleErrors: string[] = [];
 let uncaughtErrors: string[] = [];
@@ -82,6 +83,41 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(screen.getByRole('heading', { name: 'Profile' })).toBeInTheDocument();
     expect(screen.getByText(/Connected clinical services: none/)).toBeInTheDocument();
     expect(screen.queryByRole('button', { name: 'Help' })).not.toBeInTheDocument();
+  });
+
+  it('edits and saves a local profile, updates the shell, and restores it after remount', async () => {
+    const user = userEvent.setup();
+    await renderAt('/settings');
+    await user.clear(screen.getByRole('textbox', { name: 'Display name' }));
+    await user.click(screen.getByRole('button', { name: 'Save profile' }));
+    expect(screen.getByRole('alert')).toHaveTextContent('Enter a display name.');
+    expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toBeNull();
+    await user.type(screen.getByRole('textbox', { name: 'Display name' }), 'Dr. Maya Patel');
+    await user.type(screen.getByRole('textbox', { name: 'Clinical role' }), 'Physician');
+    await user.type(screen.getByRole('textbox', { name: 'Specialty' }), 'Internal medicine');
+    await user.click(screen.getByRole('button', { name: 'Save profile' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Profile saved in this browser.');
+    expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveValue('Dr. Maya Patel');
+    expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toContain('Internal medicine');
+    expect(screen.getByText('Physician · Internal medicine')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Settings' }).parentElement).toHaveTextContent('Dr. Maya Patel');
+    await user.click(screen.getByRole('button', { name: 'Profile menu' }));
+    expect(await screen.findByText('Dr. Maya Patel', { selector: '[role="menu"] *' })).toBeInTheDocument();
+    cleanup();
+    await renderAt('/settings');
+    expect(await screen.findByRole('textbox', { name: 'Display name' })).toHaveValue('Dr. Maya Patel');
+    expect(screen.getByRole('textbox', { name: 'Specialty' })).toHaveValue('Internal medicine');
+  });
+
+  it('reports a local storage failure without claiming the profile was saved', async () => {
+    const user = userEvent.setup();
+    await renderAt('/settings');
+    await user.clear(screen.getByRole('textbox', { name: 'Display name' }));
+    await user.type(screen.getByRole('textbox', { name: 'Display name' }), 'Dr. Test');
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => { throw new Error('Storage blocked'); });
+    await user.click(screen.getByRole('button', { name: 'Save profile' }));
+    expect(screen.getByRole('alert')).toHaveTextContent('Could not save in this browser.');
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
   it('keeps clinical review approval behind a confirmation dialog', async () => {
