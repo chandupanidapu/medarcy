@@ -54,3 +54,28 @@
   --teal: oklch(0.69 0.1 183); --teal-soft: oklch(0.28 0.04 184); --overlay: oklch(0.08 0.02 255 / 70%);
 }
 @layer base { * { border-color: var(--color-border); } body { background: var(--color-background); color: var(--color-foreground); font-family: var(--font-sans); } button, a { -webkit-tap-highlight-color: transparent; } }
+:root { --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes md-fade-up { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes md-shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+@keyframes md-step { from { opacity: .35; } to { opacity: 1; } }
+/* Page entry: the page fades up, then its main blocks follow in sequence */
+.page-enter { animation: md-fade-up 400ms var(--ease-out-soft) both; }
+.page-enter > * > *, .page-enter .grid > * { animation: md-fade-up 450ms var(--ease-out-soft) both; }
+.page-enter > * > *:nth-child(2), .page-enter .grid > *:nth-child(2) { animation-delay: 50ms; }
+.page-enter > * > *:nth-child(3), .page-enter .grid > *:nth-child(3) { animation-delay: 100ms; }
+.page-enter > * > *:nth-child(4), .page-enter .grid > *:nth-child(4) { animation-delay: 150ms; }
+.page-enter > * > *:nth-child(5), .page-enter .grid > *:nth-child(5) { animation-delay: 200ms; }
+.page-enter > * > *:nth-child(n+6), .page-enter .grid > *:nth-child(n+6) { animation-delay: 250ms; }
+@utility animate-shimmer { background: linear-gradient(90deg, var(--color-muted) 25%, var(--color-accent) 50%, var(--color-muted) 75%); background-size: 200% 100%; animation: md-shimmer 1.6s linear infinite; }
+@layer base {
+  a, button, [role="tab"], input, textarea, select { transition: color 150ms, background-color 150ms, border-color 150ms, box-shadow 200ms, transform 150ms var(--ease-out-soft), opacity 150ms; }
+  button:not(:disabled):active, a[class*="inline-flex"]:active { transform: scale(0.98); }
+  main a[class*="border"]:hover, main button[class*="border"][class*="text-left"]:hover { transform: translateY(-2px); box-shadow: 0 8px 20px -14px color-mix(in oklab, var(--color-foreground) 45%, transparent); border-color: color-mix(in oklab, var(--color-primary) 35%, var(--color-border)); }
+  [role="tabpanel"][data-state="active"] { animation: md-fade-up 250ms var(--ease-out-soft); }
+  [data-slot="accordion-content"], details > :not(summary) { animation: md-fade-up 250ms var(--ease-out-soft); }
+}
+.theme-transition, .theme-transition * { transition: background-color 350ms ease, color 350ms ease, border-color 350ms ease, fill 350ms ease !important; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
+  main a:hover, main button:hover { transform: none !important; }
+}
