@@ -123,6 +123,7 @@ describe('Medarcy navigation and interactive controls', () => {
   it('downloads the saved profile as a JSON backup file', async () => {
     const user = userEvent.setup();
     await renderAt('/settings');
+    await user.clear(screen.getByRole('textbox', { name: 'Display name' }));
     await user.type(screen.getByRole('textbox', { name: 'Display name' }), 'Dr. Maya Patel');
     await user.type(screen.getByRole('textbox', { name: 'Clinical role' }), 'Physician');
     await user.type(screen.getByRole('textbox', { name: 'Specialty' }), 'Internal medicine');
