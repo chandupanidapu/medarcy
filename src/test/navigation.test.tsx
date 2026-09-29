@@ -141,6 +141,7 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(exported.exportedAt).toEqual(expect.any(String));
     expect(exported.profile).toEqual({ displayName: 'Dr. Maya Patel', clinicalRole: 'Physician', specialty: 'Internal medicine' });
     expect(anchorClick).toHaveBeenCalled();
+    await new Promise((resolve) => setTimeout(resolve, 1100));
     expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock-download');
     createObjectURL.mockRestore();
     revokeObjectURL.mockRestore();
