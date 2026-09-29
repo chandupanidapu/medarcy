@@ -7,6 +7,7 @@ import { nav, quickActions } from '../lib/medarcy-data';
 import { AppShell } from '../components/medarcy/shell';
 import { Index } from '../routes/index';
 import { ClinicalReview } from '../routes/clinical-review';
+import { Settings } from '../routes/settings';
 
 let consoleErrors: string[] = [];
 let uncaughtErrors: string[] = [];
@@ -31,10 +32,10 @@ function captureRejection(event: PromiseRejectionEvent) { uncaughtErrors.push(St
 
 async function renderAt(path: string) {
   const root = createRootRoute({ component: () => <AppShell><Outlet /></AppShell> });
-  const routes = nav.map(({ to, label }) => createRoute({
+  const routes = [...nav, { to: '/settings', label: 'Settings' }].map(({ to, label }) => createRoute({
     getParentRoute: () => root,
     path: to,
-    component: to === '/' ? Index : to === '/clinical-review' ? ClinicalReview : () => <h1>{label}</h1>,
+    component: to === '/' ? Index : to === '/clinical-review' ? ClinicalReview : to === '/settings' ? Settings : () => <h1>{label}</h1>,
   }));
   const router = createRouter({
     routeTree: root.addChildren(routes),
@@ -70,15 +71,17 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(screen.getByRole('button', { name: 'Close navigation' }).closest('aside')).toHaveClass('-translate-x-full');
   });
 
-  it('searches workspaces and opens the profile menu without context errors', async () => {
+  it('searches workspaces and opens Settings from the profile menu without context errors', async () => {
     const user = userEvent.setup();
     await renderAt('/');
     await user.type(screen.getByRole('textbox', { name: 'Global search' }), 'Medication safety');
     expect((await screen.findAllByText('Demo interaction screen')).some((item) => item.closest('a')?.getAttribute('href') === '/drug-intelligence')).toBe(true);
     await user.click(screen.getByRole('button', { name: 'Profile menu' }));
-    expect(await screen.findByRole('menuitem', { name: 'Profile settings' })).toBeInTheDocument();
-    await user.keyboard('{Escape}');
-    expect(screen.queryByRole('menuitem', { name: 'Profile settings' })).not.toBeInTheDocument();
+    await user.click(await screen.findByRole('menuitem', { name: 'Settings' }));
+    expect(await screen.findByRole('heading', { name: 'Settings', level: 1 })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: 'Profile' })).toBeInTheDocument();
+    expect(screen.getByText(/Connected clinical services: none/)).toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: 'Help' })).not.toBeInTheDocument();
   });
 
   it('keeps clinical review approval behind a confirmation dialog', async () => {
@@ -98,16 +101,18 @@ describe('Medarcy navigation and interactive controls', () => {
     const user = userEvent.setup();
     localStorage.removeItem('medarcy-theme');
     document.documentElement.classList.remove('dark');
-    await renderAt('/clinical-review');
-    await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }));
+    await renderAt('/settings');
+    await user.click(screen.getByRole('button', { name: 'Dark' }));
     expect(document.documentElement).toHaveClass('dark');
     expect(localStorage.getItem('medarcy-theme')).toBe('dark');
-    expect(screen.getByRole('button', { name: 'Switch to light mode' })).toHaveAttribute('aria-pressed', 'true');
+    expect(screen.getByRole('button', { name: 'Dark' })).toHaveAttribute('aria-pressed', 'true');
+    await user.click(screen.getByRole('link', { name: 'Clinical Review' }));
     await user.click(screen.getByRole('button', { name: 'Approve Review' }));
     const dialog = await screen.findByRole('dialog', { name: 'Confirm clinician review' });
     expect(dialog).toBeInTheDocument();
     await user.click(within(dialog).getByRole('button', { name: 'Cancel' }));
-    await user.click(screen.getByRole('button', { name: 'Switch to light mode' }));
+    await user.click(screen.getByRole('link', { name: 'Settings' }));
+    await user.click(screen.getByRole('button', { name: 'Light' }));
     expect(document.documentElement).not.toHaveClass('dark');
     expect(localStorage.getItem('medarcy-theme')).toBe('light');
   });
@@ -120,7 +125,8 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(images).toHaveLength(4);
     expect(images[0]).toHaveAttribute('src', expect.stringContaining('medarcy-light-full.png'));
     expect(images[1]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-full.png'));
-    await user.click(screen.getByRole('button', { name: 'Switch to dark mode' }));
+    await user.click(screen.getByRole('link', { name: 'Settings' }));
+    await user.click(screen.getByRole('button', { name: 'Dark' }));
     expect(document.documentElement).toHaveClass('dark');
     await user.click(screen.getByRole('button', { name: 'Collapse navigation' }));
     expect(images[3]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-mark.png'));
