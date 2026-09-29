@@ -93,7 +93,7 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(screen.getByRole('alert')).toHaveTextContent('Enter a display name.');
     expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toBeNull();
     await user.type(screen.getByRole('textbox', { name: 'Display name' }), 'Dr. Maya Patel');
-    await user.type(screen.getBy_role('textbox', { name: 'Clinical role' }), 'Physician');
+    await user.type(screen.getByRole('textbox', { name: 'Clinical role' }), 'Physician');
     await user.type(screen.getByRole('textbox', { name: 'Specialty' }), 'Internal medicine');
     await user.click(screen.getByRole('button', { name: 'Save profile' }));
     expect(screen.getByRole('status')).toHaveTextContent('Profile saved in this browser.');
