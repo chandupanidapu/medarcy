@@ -53,7 +53,7 @@ export function parseProfileImport(json: string): ProfileImportResult {
     return { ok: false, error: 'That file is not a Medarcy profile backup.' };
   }
   const record = data as Record<string, unknown>;
-  const candidate = 'profile' in record ? record.profile : record;
+  const candidate = 'profile' in record ? record['profile'] : record;
   const parsed = profileSchema.safeParse(candidate);
   if (!parsed.success) {
     return { ok: false, error: parsed.error.issues[0]?.message ?? 'The profile details in that file are not valid.' };
