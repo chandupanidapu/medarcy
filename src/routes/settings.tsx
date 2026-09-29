@@ -45,7 +45,7 @@ export function Settings() {
     document.body.append(link);
     link.click();
     link.remove();
-    URL.revokeObjectURL(url);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
     toast.success('Profile downloaded.', {
       description: 'Local export of this browser demo workspace details. No patient information included.',
     });
