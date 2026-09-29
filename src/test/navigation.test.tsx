@@ -125,4 +125,27 @@ describe('Medarcy navigation and interactive controls', () => {
     await user.click(screen.getByRole('button', { name: 'Collapse navigation' }));
     expect(images[3]).toHaveAttribute('src', expect.stringContaining('medarcy-dark-mark.png'));
   });
+
+  it('renders fully and navigates when the OS requests reduced motion', async () => {
+    const matchMedia = vi.spyOn(window, 'matchMedia').mockImplementation((query: string) => ({
+      matches: query.includes('prefers-reduced-motion'),
+      media: query,
+      onchange: null,
+      addListener: vi.fn(),
+      removeListener: vi.fn(),
+      addEventListener: vi.fn(),
+      removeEventListener: vi.fn(),
+      dispatchEvent: vi.fn(),
+    }) as MediaQueryList);
+    const user = userEvent.setup();
+    await renderAt('/');
+    expect(screen.getByRole('heading', { name: 'Medarcy Clinical Intelligence Workspace', level: 1 })).toBeVisible();
+    for (const { title } of quickActions) {
+      expect(screen.getByRole('link', { name: new RegExp(title) })).toBeVisible();
+    }
+    const navigation = screen.getByRole('navigation', { name: 'Workspace navigation' });
+    await user.click(within(navigation).getByRole('link', { name: 'Clinical Review' }));
+    expect(await screen.findByRole('heading', { name: 'Clinical Review', level: 1 })).toBeVisible();
+    matchMedia.mockRestore();
+  });
 });
