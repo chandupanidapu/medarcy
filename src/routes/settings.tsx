@@ -64,7 +64,10 @@ export function Settings() {
             <p className="text-xs leading-5 text-muted-foreground">Saved only in this browser. Not verified, synced to an account, or shared across devices. Do not enter patient information.</p>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
             {message && <p role="status" className="text-sm text-primary">{message}</p>}
-            <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" variant="outline" onClick={downloadProfile}><Download className="size-4" />Download profile</Button>
+              <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
+            </div>
           </form>
         </div>
       </section>
