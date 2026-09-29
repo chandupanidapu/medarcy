@@ -80,6 +80,8 @@ export function Settings() {
             {message && <p role="status" className="text-sm text-primary">{message}</p>}
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="outline" onClick={downloadProfile}><Download className="size-4" />Download profile</Button>
+              <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}><Upload className="size-4" />Import profile</Button>
+              <input ref={fileInputRef} type="file" accept="application/json,.json" className="hidden" aria-label="Import profile JSON file" onChange={importProfile} />
               <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
             </div>
           </form>
