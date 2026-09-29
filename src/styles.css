@@ -77,5 +77,13 @@
 .theme-transition, .theme-transition * { transition: background-color 350ms ease, color 350ms ease, border-color 350ms ease, fill 350ms ease !important; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; animation-delay: 0ms !important; transition-duration: 1ms !important; }
-  main a:hover, main button:hover { transform: none !important; }
+  /* Stop entry, stagger, tab, accordion, and shimmer animations outright — content appears in its final state */
+  .page-enter, .page-enter > * > *, .page-enter .grid > *,
+  [role="tabpanel"][data-state="active"],
+  [data-slot="accordion-content"], details > :not(summary),
+  .animate-shimmer { animation: none !important; }
+  /* No hover movement, including child elements that move on parent hover (e.g. quick-action arrows) */
+  main a:hover, main button:hover, main a:hover *, main button:hover * { transform: none !important; }
+  /* Theme switch recolors instantly */
+  .theme-transition, .theme-transition * { transition: none !important; }
 }
