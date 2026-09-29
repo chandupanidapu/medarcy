@@ -42,7 +42,9 @@ export function Settings() {
     const link = document.createElement('a');
     link.href = url;
     link.download = 'medarcy-profile.json';
+    document.body.append(link);
     link.click();
+    link.remove();
     URL.revokeObjectURL(url);
     toast.success('Profile downloaded.', {
       description: 'Local export of this browser demo workspace details. No patient information included.',
