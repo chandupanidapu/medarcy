@@ -1,14 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Download, Moon, Sun } from 'lucide-react';
+import { Download, Moon, Sun, Upload } from 'lucide-react';
 import { toast } from 'sonner';
-import { useEffect, useState, type FormEvent } from 'react';
+import { useEffect, useRef, useState, type ChangeEvent, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { PageHeading } from '@/components/medarcy/primitives';
 import { useAppearance } from '@/components/medarcy/appearance';
 import { useProfile } from '@/components/medarcy/profile';
-import { buildProfileExport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
+import { buildProfileExport, parseProfileImport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
 import { meta } from '@/lib/medarcy-data';
 
 export const Route = createFileRoute('/settings')({
@@ -22,6 +22,7 @@ export function Settings() {
   const [draft, setDraft] = useState<Profile>(profile);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
   useEffect(() => { setDraft(profile); }, [profile]);
   const update = (key: keyof Profile, value: string) => {
     setDraft((current) => ({ ...current, [key]: value }));
@@ -50,6 +51,17 @@ export function Settings() {
       description: 'Local export of this browser demo workspace details. No patient information included.',
     });
   };
+  const importProfile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    const result = parseProfileImport(await file.text());
+    if (!result.ok) { setError(result.error); setMessage(''); return; }
+    if (!saveProfile(result.profile)) { setError('Could not save in this browser. Check your storage settings and try again.'); setMessage(''); return; }
+    setDraft(result.profile);
+    setError('');
+    setMessage('Profile imported and saved in this browser.');
+  };
   return <div className="space-y-8">
     <PageHeading eyebrow="Workspace / Preferences" title="Settings" description="Your workspace preferences and information." />
     <div className="max-w-3xl divide-y divide-border">
@@ -68,6 +80,8 @@ export function Settings() {
             {message && <p role="status" className="text-sm text-primary">{message}</p>}
             <div className="flex flex-wrap gap-2">
               <Button type="button" variant="outline" onClick={downloadProfile}><Download className="size-4" />Download profile</Button>
+              <Button type="button" variant="outline" onClick={() => fileInputRef.current?.click()}><Upload className="size-4" />Import profile</Button>
+              <input ref={fileInputRef} type="file" accept="application/json,.json" className="hidden" aria-label="Import profile JSON file" onChange={importProfile} />
               <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
             </div>
           </form>

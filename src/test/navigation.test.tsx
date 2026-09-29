@@ -148,6 +148,40 @@ describe('Medarcy navigation and interactive controls', () => {
     anchorClick.mockRestore();
   });
 
+  it('imports a valid profile backup, saves it, and restores it after remount', async () => {
+    const user = userEvent.setup();
+    await renderAt('/settings');
+    const backup = JSON.stringify({
+      app: 'Medarcy',
+      type: 'profile-backup',
+      exportedAt: '2026-09-29T00:00:00.000Z',
+      profile: { displayName: 'Dr. Imported Rao', clinicalRole: 'Surgeon', specialty: 'Cardiology' },
+    });
+    const file = new File([backup], 'medarcy-profile.json', { type: 'application/json' });
+    await user.upload(screen.getByLabelText('Import profile JSON file'), file);
+    expect(await screen.findByRole('status')).toHaveTextContent('Profile imported and saved in this browser.');
+    expect(screen.getByRole('textbox', { name: 'Display name' })).toHaveValue('Dr. Imported Rao');
+    expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toContain('Cardiology');
+    expect(screen.getByRole('link', { name: 'Settings' }).parentElement).toHaveTextContent('Dr. Imported Rao');
+    cleanup();
+    await renderAt('/settings');
+    expect(await screen.findByRole('textbox', { name: 'Display name' })).toHaveValue('Dr. Imported Rao');
+    expect(screen.getByRole('textbox', { name: 'Specialty' })).toHaveValue('Cardiology');
+  });
+
+  it('rejects invalid import files and leaves the saved profile unchanged', async () => {
+    const user = userEvent.setup();
+    await renderAt('/settings');
+    const input = screen.getByLabelText('Import profile JSON file');
+    await user.upload(input, new File(['not json {'], 'broken.json', { type: 'application/json' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('That file is not valid JSON.');
+    expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toBeNull();
+    await user.upload(input, new File([JSON.stringify({ profile: { displayName: '', clinicalRole: '', specialty: '' } })], 'empty.json', { type: 'application/json' }));
+    expect(await screen.findByRole('alert')).toHaveTextContent('Enter a display name.');
+    expect(localStorage.getItem(PROFILE_STORAGE_KEY)).toBeNull();
+    expect(screen.queryByRole('status')).not.toBeInTheDocument();
+  });
+
   it('keeps clinical review approval behind a confirmation dialog', async () => {
     const user = userEvent.setup();
     await renderAt('/clinical-review');
