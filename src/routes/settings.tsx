@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { Moon, Sun } from 'lucide-react';
+import { Download, Moon, Sun } from 'lucide-react';
+import { toast } from 'sonner';
 import { useEffect, useState, type FormEvent } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { PageHeading } from '@/components/medarcy/primitives';
 import { useAppearance } from '@/components/medarcy/appearance';
 import { useProfile } from '@/components/medarcy/profile';
-import { profileInitials, profileSchema, type Profile } from '@/lib/profile';
+import { buildProfileExport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
 import { meta } from '@/lib/medarcy-data';
 
 export const Route = createFileRoute('/settings')({
@@ -35,6 +36,20 @@ export function Settings() {
     setError('');
     setMessage('Profile saved in this browser.');
   };
+  const downloadProfile = () => {
+    const json = JSON.stringify(buildProfileExport(profile), null, 2);
+    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'medarcy-profile.json';
+    document.body.append(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    toast.success('Profile downloaded.', {
+      description: 'Local export of this browser demo workspace details. No patient information included.',
+    });
+  };
   return <div className="space-y-8">
     <PageHeading eyebrow="Workspace / Preferences" title="Settings" description="Your workspace preferences and information." />
     <div className="max-w-3xl divide-y divide-border">
@@ -51,7 +66,10 @@ export function Settings() {
             <p className="text-xs leading-5 text-muted-foreground">Saved only in this browser. Not verified, synced to an account, or shared across devices. Do not enter patient information.</p>
             {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
             {message && <p role="status" className="text-sm text-primary">{message}</p>}
-            <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
+            <div className="flex flex-wrap gap-2">
+              <Button type="button" variant="outline" onClick={downloadProfile}><Download className="size-4" />Download profile</Button>
+              <Button type="submit" disabled={JSON.stringify(draft) === JSON.stringify(profile)}>Save profile</Button>
+            </div>
           </form>
         </div>
       </section>
