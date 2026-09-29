@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { PageHeading } from '@/components/medarcy/primitives';
 import { useAppearance } from '@/components/medarcy/appearance';
 import { useProfile } from '@/components/medarcy/profile';
-import { profileInitials, profileSchema, type Profile } from '@/lib/profile';
+import { buildProfileExport, profileInitials, profileSchema, type Profile } from '@/lib/profile';
 import { meta } from '@/lib/medarcy-data';
 
 export const Route = createFileRoute('/settings')({
@@ -35,6 +35,18 @@ export function Settings() {
     if (!saveProfile(parsed.data)) { setError('Could not save in this browser. Check your storage settings and try again.'); return; }
     setError('');
     setMessage('Profile saved in this browser.');
+  };
+  const downloadProfile = () => {
+    const json = JSON.stringify(buildProfileExport(profile), null, 2);
+    const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = 'medarcy-profile.json';
+    link.click();
+    URL.revokeObjectURL(url);
+    toast.success('Profile downloaded.', {
+      description: 'Local export of this browser demo workspace details. No patient information included.',
+    });
   };
   return <div className="space-y-8">
     <PageHeading eyebrow="Workspace / Preferences" title="Settings" description="Your workspace preferences and information." />
