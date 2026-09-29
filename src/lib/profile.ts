@@ -26,3 +26,16 @@ export function readProfile(): Profile {
 export function profileInitials(name: string) {
   return name.trim().split(/\s+/).slice(0, 2).map((word) => word[0]?.toUpperCase() ?? '').join('');
 }
+
+export function buildProfileExport(profile: Profile) {
+  return {
+    app: 'Medarcy',
+    type: 'profile-backup',
+    exportedAt: new Date().toISOString(),
+    profile: {
+      displayName: profile.displayName,
+      clinicalRole: profile.clinicalRole,
+      specialty: profile.specialty,
+    },
+  };
+}
