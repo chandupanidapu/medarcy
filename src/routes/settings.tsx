@@ -51,6 +51,17 @@ export function Settings() {
       description: 'Local export of this browser demo workspace details. No patient information included.',
     });
   };
+  const importProfile = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+    const result = parseProfileImport(await file.text());
+    if (!result.ok) { setError(result.error); setMessage(''); return; }
+    if (!saveProfile(result.profile)) { setError('Could not save in this browser. Check your storage settings and try again.'); setMessage(''); return; }
+    setDraft(result.profile);
+    setError('');
+    setMessage('Profile imported and saved in this browser.');
+  };
   return <div className="space-y-8">
     <PageHeading eyebrow="Workspace / Preferences" title="Settings" description="Your workspace preferences and information." />
     <div className="max-w-3xl divide-y divide-border">
