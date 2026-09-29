@@ -3,7 +3,7 @@ import { createMemoryHistory, createRootRoute, createRoute, createRouter, Outlet
 import { render, screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { nav } from '../lib/medarcy-data';
+import { nav, quickActions } from '../lib/medarcy-data';
 import { AppShell } from '../components/medarcy/shell';
 import { Index } from '../routes/index';
 import { ClinicalReview } from '../routes/clinical-review';
