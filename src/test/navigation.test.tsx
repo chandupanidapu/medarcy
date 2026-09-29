@@ -120,6 +120,31 @@ describe('Medarcy navigation and interactive controls', () => {
     expect(screen.queryByRole('status')).not.toBeInTheDocument();
   });
 
+  it('downloads the saved profile as a JSON backup file', async () => {
+    const user = userEvent.setup();
+    await renderAt('/settings');
+    await user.type(screen.getByRole('textbox', { name: 'Display name' }), 'Dr. Maya Patel');
+    await user.type(screen.getByRole('textbox', { name: 'Clinical role' }), 'Physician');
+    await user.type(screen.getByRole('textbox', { name: 'Specialty' }), 'Internal medicine');
+    await user.click(screen.getByRole('button', { name: 'Save profile' }));
+    expect(screen.getByRole('status')).toHaveTextContent('Profile saved in this browser.');
+    const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:mock-download');
+    const revokeObjectURL = vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
+    const anchorClick = vi.spyOn(HTMLAnchorElement.prototype, 'click').mockImplementation(() => {});
+    await user.click(screen.getByRole('button', { name: 'Download profile' }));
+    const blob = createObjectURL.mock.calls[0]?.[0] as Blob;
+    const exported = JSON.parse(await blob.text());
+    expect(exported.app).toBe('Medarcy');
+    expect(exported.type).toBe('profile-backup');
+    expect(exported.exportedAt).toEqual(expect.any(String));
+    expect(exported.profile).toEqual({ displayName: 'Dr. Maya Patel', clinicalRole: 'Physician', specialty: 'Internal medicine' });
+    expect(anchorClick).toHaveBeenCalled();
+    expect(revokeObjectURL).toHaveBeenCalledWith('blob:mock-download');
+    createObjectURL.mockRestore();
+    revokeObjectURL.mockRestore();
+    anchorClick.mockRestore();
+  });
+
   it('keeps clinical review approval behind a confirmation dialog', async () => {
     const user = userEvent.setup();
     await renderAt('/clinical-review');
