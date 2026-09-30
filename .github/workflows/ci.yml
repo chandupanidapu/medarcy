@@ -33,7 +33,7 @@ jobs:
       - name: Verify Backend
         run: python -m compileall backend
 
-    frontend:
+  frontend:
     runs-on: ubuntu-latest
 
     steps:
