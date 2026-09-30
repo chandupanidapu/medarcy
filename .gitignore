@@ -35,3 +35,8 @@ dist-ssr
 .env
 .env.*
 !.env.example
+# Python generated files
+__pycache__/
+*.py[cod]
+.venv/
+venv/
